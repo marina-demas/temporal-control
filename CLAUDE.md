@@ -17,21 +17,25 @@ Do not add new dependencies without asking first.
   so each row must fetch its part with GET /parts/{partUuid}
 - GET /parts/{uuid}/allowable-statuses may return only the current status,
   meaning no changes are allowed
-- PUT /parts/{uuid} updates unit and/or status; invalid changes return an error
-  with the allowed statuses
-- Failed requests throw an ApiError: { error: string, allowableStatuses?: PartStatus[] }
+- PUT /parts/{uuid} updates unit and/or status and returns the updated part; invalid changes
+  return an error with the allowed statuses
+- Failed requests throw an ApiError (a class extending Error, in types.ts). Show error.message
+  to the user; allowableStatuses is set on invalid status changes.
 
 ## Data model notes
 - Status and unit belong to the part, not the configuration
 - One part can appear in many configurations, so a status change affects every place
   that part is used. The UI should tell the user this before or when they change it.
+- Allowable statuses depend on a part's relationships, so display Part.status as the
+  current status and use allowable statuses only for the dropdown options.
 
 ## Already built (use these, do not rewrite)
-- src/types.ts: TypeScript types for API data
-- src/api.ts: one function per endpoint (getChildren, getPart, getAllowableStatuses, updatePart)
+- src/types.ts: TypeScript types for API data, including the ApiError class
+- src/api.ts: one function per endpoint (getChildren, getPart, getAllowableStatuses, updatePart).
+  Checks env vars at startup and wraps network failures in an ApiError.
 - src/hooks.ts: TanStack Query hooks (useChildren, usePart, useAllowableStatuses, useUpdatePart).
   useChildren takes an enabled flag so children load only when a row is expanded.
-  useUpdatePart refreshes the part and its allowable statuses on success.
+  useUpdatePart refreshes the updated part and all allowable statuses on success.
 - Components must use these hooks, not call fetch or api.ts directly
 
 ## To build

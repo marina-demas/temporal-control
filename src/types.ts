@@ -40,9 +40,16 @@ export interface UpdatePartBody {
 }
 
 // Shape of every error response from the API.
-export interface ApiError {
+export class ApiError extends Error {
   error: string;
   allowableStatuses?: PartStatus[]; // included on invalid status changes
+
+  constructor(error: string, allowableStatuses?: PartStatus[]) {
+    super(error);
+    this.name = "ApiError";
+    this.error = error;
+    this.allowableStatuses = allowableStatuses;
+  }
 }
 
 // Response from the health check endpoint.

@@ -5,6 +5,7 @@ Users are field technicians with minimal training, so the UI must be simple and 
 
 ## Stack
 React, TypeScript, Vite, TanStack Query. No UI component library.
+Do not add new dependencies without asking first.
 
 ## API
 - Base URL and key come from .env (VITE_API_BASE_URL, VITE_API_KEY)
@@ -18,21 +19,31 @@ React, TypeScript, Vite, TanStack Query. No UI component library.
   meaning no changes are allowed
 - PUT /parts/{uuid} updates unit and/or status; invalid changes return an error
   with the allowed statuses
+- Failed requests throw an ApiError: { error: string, allowableStatuses?: PartStatus[] }
 
-## Rules
-- Make small, focused changes, one feature at a time
-- Explain what you changed and why
-- Use TypeScript types for all API data
-- Show loading and error states for every request
-- Never commit secrets or .env files
+## Data model notes
+- Status and unit belong to the part, not the configuration
+- One part can appear in many configurations, so a status change affects every place
+  that part is used. The UI should tell the user this before or when they change it.
 
-## Project structure
+## Already built (use these, do not rewrite)
 - src/types.ts: TypeScript types for API data
-- src/api.ts: one function per endpoint
-- src/hooks.ts: TanStack Query hooks
+- src/api.ts: one function per endpoint (getChildren, getPart, getAllowableStatuses, updatePart)
+- src/hooks.ts: TanStack Query hooks (useChildren, usePart, useAllowableStatuses, useUpdatePart).
+  useChildren takes an enabled flag so children load only when a row is expanded.
+  useUpdatePart refreshes the part and its allowable statuses on success.
+- Components must use these hooks, not call fetch or api.ts directly
+
+## To build
 - src/components/ConfigTree.tsx: the expandable configuration tree
 - src/components/PartDetails.tsx: part details and status updates
 - src/App.tsx: two-panel layout (tree on the left, details on the right)
+
+## Rules
+- Make small, focused changes, one feature at a time
+- Use TypeScript types for all API data
+- Show loading and error states for every request
+- Never commit secrets or .env files
 
 ## Working with me
 - Keep code simple and readable over clever. I review and must be able to

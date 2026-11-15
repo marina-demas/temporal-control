@@ -30,7 +30,7 @@ export function useUpdatePart(uuid: string) {
     mutationFn: (body: UpdatePartBody) => updatePart(uuid, body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['part', uuid] });
-      queryClient.invalidateQueries({ queryKey: ['allowable-statuses', uuid] });
+      queryClient.invalidateQueries({ queryKey: ['allowable-statuses'] });
     },
   });
 }

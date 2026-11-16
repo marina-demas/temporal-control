@@ -55,12 +55,14 @@ Do not add new dependencies without asking first.
 - Tests (npm test): Vitest and Testing Library. api.test.ts covers error handling and requests
   with a mocked fetch; PartDetails and ConfigTree tests mock api.ts so the real hooks still run.
   vite.config.ts provides fake env values so tests never need a real .env.
+- src/components/ErrorBoundary.tsx: class component wrapped around the whole app in main.tsx.
+  Shows "Something went wrong" and a reload button if rendering crashes. componentDidCatch
+  has a comment where an error tracking service (Sentry, Airbrake) would be called.
+  One test covers the fallback.
 - Components must use these hooks, not call fetch or api.ts directly
 
 ## To build
-- A React error boundary around the app: a friendly fallback with a reload button
-  instead of a blank screen, a comment where an error tracking service would go,
-  and one test for the fallback
+Nothing planned right now.
 
 ## Known limitations
 - If a parent row is collapsed after selecting something inside it, then a breadcrumb

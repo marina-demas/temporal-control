@@ -278,6 +278,30 @@
   color: #ffffff;
 }
 
+/* Error boundary fallback: centered message and a reload button. */
+.error-fallback {
+  max-width: 480px;
+  margin: 15vh auto 0;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.error-fallback button {
+  margin-top: 16px;
+  min-height: 44px;
+  padding: 0 24px;
+  background: var(--header-bg);
+  color: var(--header-text);
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.error-fallback button:hover {
+  background: #0d2444;
+}
+
 .tree-message {
   padding-left: calc(var(--depth) * 20px);
 }

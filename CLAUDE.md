@@ -40,12 +40,16 @@ Do not add new dependencies without asking first.
 - src/components/ConfigTree.tsx: the expandable tree. Exports SelectedNode
   ({ config, path }), passed to onSelect. path runs from the end unit to the
   selected config, inclusive.
+- src/components/PartDetails.tsx: part details and status updates. Dropdown from
+  allowable statuses (no type casts), Update button, "applies everywhere" note,
+  success and error messages.
+- src/App.tsx: holds the selected node and renders the tree and PartDetails side by side.
+  PartDetails uses key={selected.config.uuid} so it resets when the selection changes.
 - Components must use these hooks, not call fetch or api.ts directly
 
 ## To build
-- src/components/PartDetails.tsx: part details and status updates
-- src/App.tsx: two-panel layout (tree on the left, details on the right).
-  It currently renders ConfigTree and logs the selection as a temporary test.
+- Layout and usability polish: clear two-panel layout, breadcrumb for the selected path,
+  readable styling for the details list, and a better experience for rows with no children
 
 ## Rules
 - Make small, focused changes, one feature at a time

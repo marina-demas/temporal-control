@@ -11,17 +11,14 @@ export interface SelectedNode {
 }
 
 interface ConfigTreeProps {
+  // The selection lives in App, so the tree only displays it. This lets other
+  // parts of the page (like the breadcrumb) change it and the highlight follows.
+  selectedUuid: string | null;
   onSelect: (node: SelectedNode) => void;
 }
 
-export function ConfigTree({ onSelect }: ConfigTreeProps) {
-  const [selectedUuid, setSelectedUuid] = useState<string | null>(null);
+export function ConfigTree({ selectedUuid, onSelect }: ConfigTreeProps) {
   const { data, isLoading, error } = useChildren();
-
-  function handleSelect(node: SelectedNode) {
-    setSelectedUuid(node.config.uuid);
-    onSelect(node);
-  }
 
   if (isLoading) return <p>Loading end units...</p>;
   if (error) return <p role="alert">Could not load end units: {error.message}</p>;
@@ -40,7 +37,7 @@ export function ConfigTree({ onSelect }: ConfigTreeProps) {
           parentPath={[]}
           depth={0}
           selectedUuid={selectedUuid}
-          onSelect={handleSelect}
+          onSelect={onSelect}
         />
       ))}
     </ul>

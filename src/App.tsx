@@ -14,7 +14,10 @@ function App() {
       </header>
       <main className="app-layout">
         <section className="app-panel app-panel--tree" aria-label="Configurations">
-          <ConfigTree onSelect={setSelected} />
+          <ConfigTree
+            selectedUuid={selected?.config.uuid ?? null}
+            onSelect={setSelected}
+          />
         </section>
         <section className="app-panel app-panel--details" aria-label="Part details">
           {selected ? (

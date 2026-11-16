@@ -103,44 +103,52 @@ export function PartDetails({ node }: PartDetailsProps) {
             <p>No status changes available for this part</p>
           ) : (
             <div>
-              <label>
-                New status{' '}
-                <select
-                  value={selectValue}
-                  onChange={(e) => handleStatusChange(e.target.value)}
-                  disabled={update.isPending}
+              <div className="status-controls">
+                <label>
+                  New status{' '}
+                  <select
+                    value={selectValue}
+                    onChange={(e) => handleStatusChange(e.target.value)}
+                    disabled={update.isPending}
+                  >
+                    {!currentIsOption && (
+                      <option value="" disabled>
+                        Choose a status
+                      </option>
+                    )}
+                    {options.map((s) => (
+                      <option key={s} value={s}>
+                        {capitalize(s)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button
+                  type="button"
+                  onClick={handleUpdate}
+                  disabled={update.isPending || !canUpdate}
                 >
-                  {!currentIsOption && (
-                    <option value="" disabled>
-                      Choose a status
-                    </option>
-                  )}
-                  {options.map((s) => (
-                    <option key={s} value={s}>
-                      {capitalize(s)}
-                    </option>
-                  ))}
-                </select>
-              </label>{' '}
-              <button
-                type="button"
-                onClick={handleUpdate}
-                disabled={update.isPending || !canUpdate}
-              >
-                {update.isPending ? 'Saving...' : 'Update'}
-              </button>{' '}
-              <span>This updates {partNo} everywhere it's used.</span>
+                  {update.isPending ? 'Saving...' : 'Update'}
+                </button>
+              </div>
+              <p className="applies-note">
+                This updates {partNo} everywhere it's used.
+              </p>
             </div>
           )}
         </>
       )}
 
-      {update.isSuccess && <p role="status">Status updated to {update.data.status}.</p>}
+      {update.isSuccess && (
+        <p role="status">Status updated to {capitalize(update.data.status)}.</p>
+      )}
       {update.error && (
         <div role="alert">
           <p>Could not update status: {update.error.message}</p>
           {update.error instanceof ApiError && update.error.allowableStatuses && (
-            <p>Allowed statuses: {update.error.allowableStatuses.join(', ')}</p>
+            <p>
+              Allowed statuses: {update.error.allowableStatuses.map(capitalize).join(', ')}
+            </p>
           )}
         </div>
       )}

@@ -67,6 +67,7 @@ Do not add new dependencies without asking first.
 - Use TypeScript types for all API data
 - Show loading and error states for every request
 - Never commit secrets or .env files
+- Create and change files with normal edits, not shell commands like sed or cat >, so every change can be reviewed as a diff
 
 ## Working with me
 - Keep code simple and readable over clever. I review and must be able to

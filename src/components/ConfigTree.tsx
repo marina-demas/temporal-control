@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { CSSProperties } from 'react';
 import { useChildren, usePart } from '../hooks';
 import type { ChildConfiguration } from '../types';
 
@@ -31,7 +32,7 @@ export function ConfigTree({ onSelect }: ConfigTreeProps) {
   );
 
   return (
-    <ul style={listStyle}>
+    <ul className="tree-list">
       {endUnits.map((config) => (
         <ConfigRow
           key={config.uuid}
@@ -67,11 +68,8 @@ function ConfigRow({ config, parentPath, depth, selectedUuid, onSelect }: Config
   return (
     <li>
       <div
-        style={{
-          display: 'flex',
-          paddingLeft: depth * 20,
-          background: isSelected ? '#cfe3ff' : undefined,
-        }}
+        className={isSelected ? 'tree-row tree-row--selected' : 'tree-row'}
+        style={depthStyle(depth)}
       >
         <button
           type="button"
@@ -85,7 +83,7 @@ function ConfigRow({ config, parentPath, depth, selectedUuid, onSelect }: Config
           type="button"
           onClick={() => onSelect({ config, path })}
           aria-current={isSelected}
-          style={{ flex: 1, textAlign: 'left' }}
+          className="tree-row-select"
         >
           {isEndUnit && <strong>{config.endUnitSerialNo} </strong>}
           {part.isLoading && 'Loading part...'}
@@ -98,18 +96,22 @@ function ConfigRow({ config, parentPath, depth, selectedUuid, onSelect }: Config
       {expanded && (
         <div>
           {children.isLoading && (
-            <p style={{ paddingLeft: (depth + 1) * 20 }}>Loading...</p>
+            <p className="tree-message" style={depthStyle(depth + 1)}>
+              Loading...
+            </p>
           )}
           {children.error && (
-            <p role="alert" style={{ paddingLeft: (depth + 1) * 20 }}>
+            <p role="alert" className="tree-message" style={depthStyle(depth + 1)}>
               Could not load components: {children.error.message}
             </p>
           )}
           {children.data && children.data.length === 0 && (
-            <p style={{ paddingLeft: (depth + 1) * 20 }}>No components</p>
+            <p className="tree-message" style={depthStyle(depth + 1)}>
+              No components
+            </p>
           )}
           {children.data && children.data.length > 0 && (
-            <ul style={listStyle}>
+            <ul className="tree-list">
               {children.data.map((child) => (
                 <ConfigRow
                   key={child.uuid}
@@ -128,4 +130,8 @@ function ConfigRow({ config, parentPath, depth, selectedUuid, onSelect }: Config
   );
 }
 
-const listStyle = { listStyle: 'none', margin: 0, padding: 0 };
+// The one inline style left: it passes the nesting depth to the CSS
+// (see .tree-row in App.css), which turns it into indentation.
+function depthStyle(depth: number): CSSProperties & Record<'--depth', number> {
+  return { '--depth': depth };
+}

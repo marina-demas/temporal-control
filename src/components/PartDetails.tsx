@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAllowableStatuses, usePart, useUpdatePart } from '../hooks';
 import { ApiError } from '../types';
 import type { PartStatus } from '../types';
+import { Breadcrumb } from './Breadcrumb';
 import type { SelectedNode } from './ConfigTree';
 
 interface PartDetailsProps {
@@ -42,6 +43,7 @@ export function PartDetails({ node }: PartDetailsProps) {
 
   return (
     <div>
+      <Breadcrumb path={node.path} />
       <h2>
         {partNo} {name}
       </h2>

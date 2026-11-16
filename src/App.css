@@ -83,6 +83,32 @@
   text-align: left;
 }
 
+/* Breadcrumb: "00001 > TM-1210 Safety System > ..." The ">" is added by CSS. */
+.breadcrumb {
+  margin-bottom: 16px;
+}
+
+.breadcrumb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-size: 0.9375rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: '>';
+  margin-right: 8px;
+  color: #5b6573;
+}
+
+/* The last item is the selected part. */
+.breadcrumb-item[aria-current='location'] {
+  font-weight: 700;
+}
+
 .tree-message {
   padding-left: calc(var(--depth) * 20px);
 }

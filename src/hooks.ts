@@ -1,6 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSyncExternalStore } from 'react';
+import { onlineManager, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAllowableStatuses, getChildren, getPart, updatePart } from './api';
 import type { UpdatePartBody } from './types';
+
+// True while the browser is online. Uses the same onlineManager that TanStack Query
+// uses to pause and resume queries, so the banner and the queries always agree.
+export function useOnlineStatus(): boolean {
+  return useSyncExternalStore(
+    (onChange) => onlineManager.subscribe(onChange),
+    () => onlineManager.isOnline(),
+  );
+}
 
 export function useChildren(parentUuid?: string) {
   return useQuery({

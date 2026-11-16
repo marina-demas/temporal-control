@@ -2,13 +2,20 @@ import { useState } from 'react';
 import { ConfigTree } from './components/ConfigTree';
 import type { SelectedNode } from './components/ConfigTree';
 import { PartDetails } from './components/PartDetails';
+import { useOnlineStatus } from './hooks';
 import './App.css';
 
 function App() {
   const [selected, setSelected] = useState<SelectedNode | null>(null);
+  const isOnline = useOnlineStatus();
 
   return (
     <div className="app">
+      {!isOnline && (
+        <div role="status" className="offline-banner">
+          You're offline. Data will load when your connection returns.
+        </div>
+      )}
       <header className="app-header">
         <h1>Temporal Control</h1>
       </header>

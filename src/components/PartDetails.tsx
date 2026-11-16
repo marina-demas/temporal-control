@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAllowableStatuses, usePart, useUpdatePart } from '../hooks';
+import { useAllowableStatuses, useOnlineStatus, usePart, useUpdatePart } from '../hooks';
 import { ApiError } from '../types';
 import type { PartStatus } from '../types';
 import { Breadcrumb } from './Breadcrumb';
@@ -39,10 +39,12 @@ export function PartDetails({ node, onSelect }: PartDetailsProps) {
   const part = usePart(config.partUuid);
   const allowable = useAllowableStatuses(config.partUuid);
   const update = useUpdatePart(config.partUuid);
+  const isOnline = useOnlineStatus();
   // null means "the user hasn't picked anything", so we show the current status.
   const [pickedStatus, setPickedStatus] = useState<PartStatus | null>(null);
 
-  if (part.isLoading) return <p>Loading part...</p>;
+  // isPending also covers queries paused while offline (isLoading does not).
+  if (part.isPending) return <p>Loading part...</p>;
   if (part.error) return <p role="alert">Could not load part: {part.error.message}</p>;
   if (!part.data) return null;
 
@@ -94,7 +96,7 @@ export function PartDetails({ node, onSelect }: PartDetailsProps) {
       </dl>
 
       <h3>Change status</h3>
-      {allowable.isLoading && <p>Loading allowed statuses...</p>}
+      {allowable.isPending && <p>Loading allowed statuses...</p>}
       {allowable.error && (
         <p role="alert">Could not load allowed statuses: {allowable.error.message}</p>
       )}
@@ -127,11 +129,12 @@ export function PartDetails({ node, onSelect }: PartDetailsProps) {
                 <button
                   type="button"
                   onClick={handleUpdate}
-                  disabled={update.isPending || !canUpdate}
+                  disabled={update.isPending || !canUpdate || !isOnline}
                 >
                   {update.isPending ? 'Saving...' : 'Update'}
                 </button>
               </div>
+              {!isOnline && <p>Reconnect to save changes.</p>}
               <p className="applies-note">
                 This updates {partNo} everywhere it's used.
               </p>

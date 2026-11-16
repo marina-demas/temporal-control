@@ -5,6 +5,14 @@
   height: 100dvh;
 }
 
+.offline-banner {
+  padding: 12px 20px;
+  background: #fff4d6;
+  border-bottom: 4px solid #b45309;
+  color: #5b3200;
+  font-weight: 600;
+}
+
 .app-header {
   background: var(--header-bg);
   color: var(--header-text);

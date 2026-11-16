@@ -2,11 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAllowableStatuses, getChildren, getPart, updatePart } from './api';
 import type { UpdatePartBody } from './types';
 
-export function useChildren(parentUuid?: string, enabled = true) {
+export function useChildren(parentUuid?: string) {
   return useQuery({
     queryKey: ['children', parentUuid ?? 'root'],
     queryFn: () => getChildren(parentUuid),
-    enabled,
   });
 }
 

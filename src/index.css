@@ -21,6 +21,12 @@ body {
   margin: 0;
 }
 
+/* Form controls don't use the page font by default; make them match. */
+button,
+select {
+  font: inherit;
+}
+
 h1,
 h2,
 h3 {

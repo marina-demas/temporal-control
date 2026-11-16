@@ -55,6 +55,10 @@
   padding: 0;
 }
 
+.tree-list {
+  --toggle-size: 32px;
+}
+
 /* --depth is set per row in ConfigTree.tsx; each level indents 20px. */
 .tree-row {
   display: flex;
@@ -76,6 +80,13 @@
 
 .tree-row--selected .tree-row-select {
   font-weight: 700;
+}
+
+/* The toggle button and the blank spacer share one width, so labels line up. */
+.tree-toggle,
+.tree-toggle-spacer {
+  flex: none;
+  width: var(--toggle-size);
 }
 
 .tree-row-select {

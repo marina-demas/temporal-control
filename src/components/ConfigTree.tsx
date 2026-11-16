@@ -58,12 +58,17 @@ interface ConfigRowProps {
 function ConfigRow({ config, parentPath, depth, selectedUuid, onSelect }: ConfigRowProps) {
   const [expanded, setExpanded] = useState(false);
   const part = usePart(config.partUuid);
-  // Children are only requested once the row is expanded.
-  const children = useChildren(config.uuid, expanded);
+  // Every row asks for its children as soon as it renders, so we know right away
+  // whether to show a toggle. Rows only render once their parent is expanded,
+  // so only the rows on screen make this request.
+  const children = useChildren(config.uuid);
 
   const path = [...parentPath, config];
   const isSelected = selectedUuid === config.uuid;
   const isEndUnit = depth === 0;
+  // Only show the toggle once we know there is something to expand.
+  // While loading (or if the request failed) we show a blank spacer instead.
+  const hasChildren = children.data !== undefined && children.data.length > 0;
 
   return (
     <li>
@@ -71,14 +76,20 @@ function ConfigRow({ config, parentPath, depth, selectedUuid, onSelect }: Config
         className={isSelected ? 'tree-row tree-row--selected' : 'tree-row'}
         style={depthStyle(depth)}
       >
-        <button
-          type="button"
-          onClick={() => setExpanded(!expanded)}
-          aria-expanded={expanded}
-          aria-label={expanded ? 'Collapse' : 'Expand'}
-        >
-          {expanded ? '▾' : '▸'}
-        </button>
+        {hasChildren ? (
+          <button
+            type="button"
+            className="tree-toggle"
+            onClick={() => setExpanded(!expanded)}
+            aria-expanded={expanded}
+            aria-label={expanded ? 'Collapse' : 'Expand'}
+          >
+            {expanded ? '▾' : '▸'}
+          </button>
+        ) : (
+          // Same width as the toggle, so labels line up with rows that have one.
+          <span className="tree-toggle-spacer" aria-hidden="true" />
+        )}
         <button
           type="button"
           onClick={() => onSelect({ config, path })}
@@ -93,38 +104,26 @@ function ConfigRow({ config, parentPath, depth, selectedUuid, onSelect }: Config
         </button>
       </div>
 
-      {expanded && (
-        <div>
-          {children.isLoading && (
-            <p className="tree-message" style={depthStyle(depth + 1)}>
-              Loading...
-            </p>
-          )}
-          {children.error && (
-            <p role="alert" className="tree-message" style={depthStyle(depth + 1)}>
-              Could not load components: {children.error.message}
-            </p>
-          )}
-          {children.data && children.data.length === 0 && (
-            <p className="tree-message" style={depthStyle(depth + 1)}>
-              No components
-            </p>
-          )}
-          {children.data && children.data.length > 0 && (
-            <ul className="tree-list">
-              {children.data.map((child) => (
-                <ConfigRow
-                  key={child.uuid}
-                  config={child}
-                  parentPath={path}
-                  depth={depth + 1}
-                  selectedUuid={selectedUuid}
-                  onSelect={onSelect}
-                />
-              ))}
-            </ul>
-          )}
-        </div>
+      {/* A failed request is shown on the row, so it isn't mistaken for "no components". */}
+      {children.error && (
+        <p role="alert" className="tree-message" style={depthStyle(depth + 1)}>
+          Could not load components: {children.error.message}
+        </p>
+      )}
+
+      {expanded && children.data && children.data.length > 0 && (
+        <ul className="tree-list">
+          {children.data.map((child) => (
+            <ConfigRow
+              key={child.uuid}
+              config={child}
+              parentPath={path}
+              depth={depth + 1}
+              selectedUuid={selectedUuid}
+              onSelect={onSelect}
+            />
+          ))}
+        </ul>
       )}
     </li>
   );

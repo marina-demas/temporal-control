@@ -18,6 +18,12 @@ const BADGE_COLOR: Record<PartStatus, string> = {
   retired: 'badge--dark',
 };
 
+// "active" -> "Active". Used for the dropdown text only; the option's value
+// stays lowercase because that is what the API expects.
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 // The status word is always shown, so the meaning never depends on color alone.
 function StatusBadge({ status }: { status: PartStatus }) {
   return <span className={`badge ${BADGE_COLOR[status]}`}>{status}</span>;
@@ -111,7 +117,7 @@ export function PartDetails({ node }: PartDetailsProps) {
                   )}
                   {options.map((s) => (
                     <option key={s} value={s}>
-                      {s}
+                      {capitalize(s)}
                     </option>
                   ))}
                 </select>

@@ -22,7 +22,10 @@ function App() {
             // which resets the dropdown and any success/error message.
             <PartDetails key={selected.config.uuid} node={selected} />
           ) : (
-            <p>Select a part to see its details</p>
+            <p>
+              Select a time machine or part to see its details. Use the arrow (▸) next
+              to a row to show its components.
+            </p>
           )}
         </section>
       </main>

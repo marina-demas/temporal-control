@@ -18,10 +18,15 @@ interface ConfigTreeProps {
 }
 
 export function ConfigTree({ selectedUuid, onSelect }: ConfigTreeProps) {
-  const { data, isPending, error } = useChildren();
+  const { data, isPending, fetchStatus, error } = useChildren();
 
   // isPending also covers queries paused while offline (isLoading does not).
-  if (isPending) return <p>Loading end units...</p>;
+  // A paused query isn't loading, it's waiting for the connection, so say that.
+  if (isPending) {
+    return (
+      <p>{fetchStatus === 'paused' ? 'Waiting for connection...' : 'Loading end units...'}</p>
+    );
+  }
   if (error) return <p role="alert">Could not load end units: {error.message}</p>;
 
   // Copy before sorting so we don't mutate the cached query data.
@@ -95,7 +100,8 @@ function ConfigRow({ config, parentPath, depth, selectedUuid, onSelect }: Config
           className="tree-row-select"
         >
           {isEndUnit && <strong>{config.endUnitSerialNo} </strong>}
-          {part.isPending && 'Loading part...'}
+          {part.isPending &&
+            (part.fetchStatus === 'paused' ? 'Waiting for connection...' : 'Loading part...')}
           {part.error && `Could not load part: ${part.error.message}`}
           {part.data && `${part.data.partNo} ${part.data.name}`}
           {!isEndUnit && ` x${config.quantity}`}

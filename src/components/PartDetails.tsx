@@ -44,7 +44,12 @@ export function PartDetails({ node, onSelect }: PartDetailsProps) {
   const [pickedStatus, setPickedStatus] = useState<PartStatus | null>(null);
 
   // isPending also covers queries paused while offline (isLoading does not).
-  if (part.isPending) return <p>Loading part...</p>;
+  // A paused query isn't loading, it's waiting for the connection, so say that.
+  if (part.isPending) {
+    return (
+      <p>{part.fetchStatus === 'paused' ? 'Waiting for connection...' : 'Loading part...'}</p>
+    );
+  }
   if (part.error) return <p role="alert">Could not load part: {part.error.message}</p>;
   if (!part.data) return null;
 
@@ -96,7 +101,13 @@ export function PartDetails({ node, onSelect }: PartDetailsProps) {
       </dl>
 
       <h3>Change status</h3>
-      {allowable.isPending && <p>Loading allowed statuses...</p>}
+      {allowable.isPending && (
+        <p>
+          {allowable.fetchStatus === 'paused'
+            ? 'Waiting for connection...'
+            : 'Loading allowed statuses...'}
+        </p>
+      )}
       {allowable.error && (
         <p role="alert">Could not load allowed statuses: {allowable.error.message}</p>
       )}
@@ -144,10 +155,11 @@ export function PartDetails({ node, onSelect }: PartDetailsProps) {
       )}
 
       {update.isSuccess && (
-        <p role="status">Status updated to {capitalize(update.data.status)}.</p>
+        <p role="status" className="update-message">
+          Status updated to {capitalize(update.data.status)}.</p>
       )}
       {update.error && (
-        <div role="alert">
+        <div role="alert" className="update-message">
           <p>Could not update status: {update.error.message}</p>
           {update.error instanceof ApiError && update.error.allowableStatuses && (
             <p>

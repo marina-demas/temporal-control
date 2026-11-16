@@ -223,6 +223,11 @@
   color: #5b6573;
 }
 
+/* Space between the status controls and the success or error message below them. */
+.update-message {
+  margin-top: 16px;
+}
+
 /* Hard-to-miss warning that a status change affects every place the part is used. */
 .applies-note {
   margin-top: 12px;

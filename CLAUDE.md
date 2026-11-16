@@ -33,9 +33,10 @@ Do not add new dependencies without asking first.
 - src/types.ts: TypeScript types for API data, including the ApiError class
 - src/api.ts: one function per endpoint (getChildren, getPart, getAllowableStatuses, updatePart).
   Checks env vars at startup and wraps network failures in an ApiError.
-- src/hooks.ts: TanStack Query hooks (useChildren, usePart, useAllowableStatuses, useUpdatePart).
-  usePart caches parts for 5 minutes (staleTime).
+- src/hooks.ts: TanStack Query hooks (useChildren, usePart, useAllowableStatuses, useUpdatePart,
+  useOnlineStatus). usePart caches parts for 5 minutes (staleTime).
   useUpdatePart refreshes the updated part and all allowable statuses on success.
+  useOnlineStatus reads TanStack's onlineManager, so it matches when queries pause.
 - src/components/ConfigTree.tsx: the expandable tree. Exports SelectedNode
   ({ config, path }). Takes selectedUuid and onSelect from App. Each visible row
   fetches its children right away, so rows with no children show no toggle.
@@ -48,12 +49,12 @@ Do not add new dependencies without asking first.
   PartDetails uses key={selected.config.uuid} so it resets when the selection changes.
 - src/App.css and src/index.css: plain CSS, light mode only, 44px click targets,
   visible keyboard focus
+- Offline: loading checks use isPending (not isLoading) so paused queries show
+  "Waiting for connection..." instead of rendering blank. App shows an offline banner,
+  and the Update button is disabled while offline.
 - Components must use these hooks, not call fetch or api.ts directly
 
 ## To build
-- Offline handling: TanStack Query pauses queries while offline, so components must
-  show a paused state instead of rendering blank. Add an offline banner and disable
-  the Update button while offline. Keep automatic resume on reconnect.
 - A small Vitest test suite: API error handling and the status dropdown logic
 
 ## Known limitations

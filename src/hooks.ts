@@ -14,6 +14,7 @@ export function usePart(uuid: string) {
   return useQuery({
     queryKey: ['part', uuid],
     queryFn: () => getPart(uuid),
+    staleTime: 5 * 60 * 100, // 5 min. Parts rarely change, and useUpdatePart refreshes them after an edit.
   });
 }
 

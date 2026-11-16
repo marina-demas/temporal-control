@@ -34,22 +34,26 @@ Do not add new dependencies without asking first.
 - src/api.ts: one function per endpoint (getChildren, getPart, getAllowableStatuses, updatePart).
   Checks env vars at startup and wraps network failures in an ApiError.
 - src/hooks.ts: TanStack Query hooks (useChildren, usePart, useAllowableStatuses, useUpdatePart).
-  useChildren takes an enabled flag so children load only when a row is expanded.
   usePart caches parts for 5 minutes (staleTime).
   useUpdatePart refreshes the updated part and all allowable statuses on success.
 - src/components/ConfigTree.tsx: the expandable tree. Exports SelectedNode
-  ({ config, path }), passed to onSelect. path runs from the end unit to the
-  selected config, inclusive.
-- src/components/PartDetails.tsx: part details and status updates. Dropdown from
-  allowable statuses (no type casts), Update button, "applies everywhere" note,
-  success and error messages.
-- src/App.tsx: holds the selected node and renders the tree and PartDetails side by side.
+  ({ config, path }). Takes selectedUuid and onSelect from App. Each visible row
+  fetches its children right away, so rows with no children show no toggle.
+- src/components/Breadcrumb.tsx: the path to the selected part. Ancestors are
+  buttons that select that item; the last item is plain text.
+- src/components/PartDetails.tsx: breadcrumb, details grid, status badge, and status
+  updates. Dropdown from allowable statuses (no type casts), Update button,
+  "applies everywhere" callout, success and error messages.
+- src/App.tsx: owns the selected node and passes it to ConfigTree and PartDetails.
   PartDetails uses key={selected.config.uuid} so it resets when the selection changes.
+- src/App.css and src/index.css: plain CSS, light mode only, 44px click targets,
+  visible keyboard focus
 - Components must use these hooks, not call fetch or api.ts directly
 
-## To build
-- Layout and usability polish: clear two-panel layout, breadcrumb for the selected path,
-  readable styling for the details list, and a better experience for rows with no children
+## Known limitations
+- If a parent row is collapsed after selecting something inside it, then a breadcrumb
+  item inside that parent is clicked, the tree highlight is hidden. The details panel
+  still shows the right part.
 
 ## Rules
 - Make small, focused changes, one feature at a time

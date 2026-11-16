@@ -31,9 +31,10 @@ function StatusBadge({ status }: { status: PartStatus }) {
 
 interface PartDetailsProps {
   node: SelectedNode;
+  onSelect: (node: SelectedNode) => void; // used by the breadcrumb
 }
 
-export function PartDetails({ node }: PartDetailsProps) {
+export function PartDetails({ node, onSelect }: PartDetailsProps) {
   const { config } = node;
   const part = usePart(config.partUuid);
   const allowable = useAllowableStatuses(config.partUuid);
@@ -67,7 +68,7 @@ export function PartDetails({ node }: PartDetailsProps) {
 
   return (
     <div>
-      <Breadcrumb path={node.path} />
+      <Breadcrumb path={node.path} onSelect={onSelect} />
       <h2>
         {partNo} {name}
       </h2>

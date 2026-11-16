@@ -1,11 +1,13 @@
 import { usePart } from '../hooks';
 import type { ChildConfiguration } from '../types';
+import type { SelectedNode } from './ConfigTree';
 
 interface BreadcrumbProps {
   path: ChildConfiguration[]; // end unit first, selected config last
+  onSelect: (node: SelectedNode) => void;
 }
 
-export function Breadcrumb({ path }: BreadcrumbProps) {
+export function Breadcrumb({ path, onSelect }: BreadcrumbProps) {
   return (
     <nav aria-label="Breadcrumb" className="breadcrumb">
       <ol className="breadcrumb-list">
@@ -14,6 +16,8 @@ export function Breadcrumb({ path }: BreadcrumbProps) {
             key={config.uuid}
             config={config}
             isLast={index === path.length - 1}
+            // Selecting an item means the path up to and including it.
+            onSelect={() => onSelect({ config, path: path.slice(0, index + 1) })}
           />
         ))}
       </ol>
@@ -24,9 +28,10 @@ export function Breadcrumb({ path }: BreadcrumbProps) {
 interface BreadcrumbItemProps {
   config: ChildConfiguration;
   isLast: boolean;
+  onSelect: () => void;
 }
 
-function BreadcrumbItem({ config, isLast }: BreadcrumbItemProps) {
+function BreadcrumbItem({ config, isLast, onSelect }: BreadcrumbItemProps) {
   // Parts are cached by the tree, so this normally doesn't make a request.
   const part = usePart(config.partUuid);
 
@@ -44,7 +49,14 @@ function BreadcrumbItem({ config, isLast }: BreadcrumbItemProps) {
 
   return (
     <li className="breadcrumb-item" aria-current={isLast ? 'location' : undefined}>
-      {label}
+      {isLast ? (
+        // The last item is the part already shown, so it is plain text.
+        label
+      ) : (
+        <button type="button" className="breadcrumb-link" onClick={onSelect}>
+          {label}
+        </button>
+      )}
     </li>
   );
 }

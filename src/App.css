@@ -122,6 +122,28 @@
   font-size: 0.9375rem;
 }
 
+/* Every item is 44px tall (links and the plain last item), vertically centered. */
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Clickable ancestors look like links. */
+.breadcrumb-link {
+  background: none;
+  border: none;
+  padding: 0 4px;
+  min-height: 44px;
+  color: var(--header-bg);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.breadcrumb-link:hover {
+  background: var(--selected-bg);
+}
+
 .breadcrumb-item + .breadcrumb-item::before {
   content: '>';
   margin-right: 8px;

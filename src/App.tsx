@@ -23,7 +23,11 @@ function App() {
           {selected ? (
             // key makes React start fresh when another row is selected,
             // which resets the dropdown and any success/error message.
-            <PartDetails key={selected.config.uuid} node={selected} />
+            <PartDetails
+              key={selected.config.uuid}
+              node={selected}
+              onSelect={setSelected}
+            />
           ) : (
             <p>
               Select a time machine or part to see its details. Use the arrow (▸) next

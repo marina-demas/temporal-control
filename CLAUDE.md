@@ -50,6 +50,12 @@ Do not add new dependencies without asking first.
   visible keyboard focus
 - Components must use these hooks, not call fetch or api.ts directly
 
+## To build
+- Offline handling: TanStack Query pauses queries while offline, so components must
+  show a paused state instead of rendering blank. Add an offline banner and disable
+  the Update button while offline. Keep automatic resume on reconnect.
+- A small Vitest test suite: API error handling and the status dropdown logic
+
 ## Known limitations
 - If a parent row is collapsed after selecting something inside it, then a breadcrumb
   item inside that parent is clicked, the tree highlight is hidden. The details panel

@@ -97,6 +97,8 @@
 
 .tree-toggle {
   cursor: pointer;
+  font-size: 1.5rem; /* makes the ▸ / ▾ arrow easy to see */
+  line-height: 1;
 }
 
 /* The row sits inside a scrolling panel, so draw the outline inside the button
@@ -168,8 +170,27 @@
   padding: 0 16px;
 }
 
+/* Update is the main action on this panel, so it gets the navy primary style. */
+.status-controls button {
+  background: var(--header-bg);
+  color: var(--header-text);
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
 .status-controls button:not(:disabled) {
   cursor: pointer;
+}
+
+.status-controls button:not(:disabled):hover {
+  background: #0d2444;
+}
+
+/* Disabled: clearly greyed out so it doesn't look clickable. */
+.status-controls button:disabled {
+  background: #d5d9e0;
+  color: #5b6573;
 }
 
 /* Hard-to-miss warning that a status change affects every place the part is used. */

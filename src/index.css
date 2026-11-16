@@ -5,6 +5,7 @@
   --border: #d0d4da;
   --header-bg: #14335c;
   --header-text: #ffffff;
+  --selected-bg: #d6e0ef; /* light tint of the header navy */
 
   font: 16px/1.5 system-ui, 'Segoe UI', Roboto, sans-serif;
   color-scheme: light;

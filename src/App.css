@@ -59,10 +59,23 @@
 .tree-row {
   display: flex;
   padding-left: calc(var(--depth) * 20px);
+  /* Always 4px wide so rows don't shift when selected; only the color changes. */
+  border-left: 4px solid transparent;
+}
+
+/* Transparent, borderless buttons let the row's background show through. */
+.tree-row button {
+  background: transparent;
+  border: none;
 }
 
 .tree-row--selected {
-  background: #cfe3ff;
+  background: var(--selected-bg);
+  border-left-color: var(--header-bg);
+}
+
+.tree-row--selected .tree-row-select {
+  font-weight: 700;
 }
 
 .tree-row-select {

@@ -35,13 +35,17 @@ Do not add new dependencies without asking first.
   Checks env vars at startup and wraps network failures in an ApiError.
 - src/hooks.ts: TanStack Query hooks (useChildren, usePart, useAllowableStatuses, useUpdatePart).
   useChildren takes an enabled flag so children load only when a row is expanded.
+  usePart caches parts for 5 minutes (staleTime).
   useUpdatePart refreshes the updated part and all allowable statuses on success.
+- src/components/ConfigTree.tsx: the expandable tree. Exports SelectedNode
+  ({ config, path }), passed to onSelect. path runs from the end unit to the
+  selected config, inclusive.
 - Components must use these hooks, not call fetch or api.ts directly
 
 ## To build
-- src/components/ConfigTree.tsx: the expandable configuration tree
 - src/components/PartDetails.tsx: part details and status updates
-- src/App.tsx: two-panel layout (tree on the left, details on the right)
+- src/App.tsx: two-panel layout (tree on the left, details on the right).
+  It currently renders ConfigTree and logs the selection as a temporary test.
 
 ## Rules
 - Make small, focused changes, one feature at a time

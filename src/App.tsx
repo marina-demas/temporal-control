@@ -8,13 +8,15 @@ function App() {
   const [selected, setSelected] = useState<SelectedNode | null>(null);
 
   return (
-    <div>
-      <h1>Temporal Control</h1>
-      <div className="app-layout">
-        <div className="app-panel">
+    <div className="app">
+      <header className="app-header">
+        <h1>Temporal Control</h1>
+      </header>
+      <main className="app-layout">
+        <section className="app-panel app-panel--tree" aria-label="Configurations">
           <ConfigTree onSelect={setSelected} />
-        </div>
-        <div className="app-panel">
+        </section>
+        <section className="app-panel app-panel--details" aria-label="Part details">
           {selected ? (
             // key makes React start fresh when another row is selected,
             // which resets the dropdown and any success/error message.
@@ -22,8 +24,8 @@ function App() {
           ) : (
             <p>Select a part to see its details</p>
           )}
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }

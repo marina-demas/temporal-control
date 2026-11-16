@@ -109,6 +109,63 @@
   font-weight: 700;
 }
 
+/* Part details: two-column grid, labels on the left and values on the right. */
+.details-list {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 10px 24px;
+  margin: 16px 0 0;
+}
+
+.details-list dt {
+  font-weight: 600;
+  color: #4a5361;
+}
+
+.details-list dd {
+  margin: 0;
+}
+
+/* Status badge */
+.badge {
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge--green {
+  background: #d4edda;
+  color: #14532d;
+}
+
+.badge--gray {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.badge--blue {
+  background: #dbeafe;
+  color: #1e3a8a;
+}
+
+.badge--amber {
+  background: #fef3c7;
+  color: #78350f;
+}
+
+.badge--red {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.badge--dark {
+  background: #4b5563;
+  color: #ffffff;
+}
+
 .tree-message {
   padding-left: calc(var(--depth) * 20px);
 }

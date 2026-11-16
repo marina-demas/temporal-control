@@ -5,6 +5,24 @@ import type { PartStatus } from '../types';
 import { Breadcrumb } from './Breadcrumb';
 import type { SelectedNode } from './ConfigTree';
 
+// Which color each status gets. Typed as Record<PartStatus, ...> so TypeScript
+// reports an error if a new status is added to the API types but not styled here.
+const BADGE_COLOR: Record<PartStatus, string> = {
+  active: 'badge--green',
+  configuration: 'badge--gray',
+  draft: 'badge--gray',
+  experimental: 'badge--blue',
+  deprecated: 'badge--amber',
+  recalled: 'badge--red',
+  obsolete: 'badge--dark',
+  retired: 'badge--dark',
+};
+
+// The status word is always shown, so the meaning never depends on color alone.
+function StatusBadge({ status }: { status: PartStatus }) {
+  return <span className={`badge ${BADGE_COLOR[status]}`}>{status}</span>;
+}
+
 interface PartDetailsProps {
   node: SelectedNode;
 }
@@ -47,7 +65,7 @@ export function PartDetails({ node }: PartDetailsProps) {
       <h2>
         {partNo} {name}
       </h2>
-      <dl>
+      <dl className="details-list">
         {config.endUnitSerialNo && (
           <>
             <dt>Serial number</dt>
@@ -61,7 +79,9 @@ export function PartDetails({ node }: PartDetailsProps) {
         <dt>Unit</dt>
         <dd>{unit}</dd>
         <dt>Current status</dt>
-        <dd>{status}</dd>
+        <dd>
+          <StatusBadge status={status} />
+        </dd>
         <dt>Quantity</dt>
         <dd>{config.quantity}</dd>
       </dl>

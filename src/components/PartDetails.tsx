@@ -18,8 +18,8 @@ const BADGE_COLOR: Record<PartStatus, string> = {
   retired: 'badge--dark',
 };
 
-// "active" -> "Active". Used for the dropdown text only; the option's value
-// stays lowercase because that is what the API expects.
+// "active" -> "Active". Used for display text only; values sent to the API
+// stay lowercase because that is what the API expects.
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
@@ -119,7 +119,7 @@ export function PartDetails({ node, onSelect }: PartDetailsProps) {
             <div>
               <div className="status-controls">
                 <label>
-                  New status{' '}
+                  New status
                   <select
                     value={selectValue}
                     onChange={(e) => handleStatusChange(e.target.value)}
@@ -156,7 +156,8 @@ export function PartDetails({ node, onSelect }: PartDetailsProps) {
 
       {update.isSuccess && (
         <p role="status" className="update-message">
-          Status updated to {capitalize(update.data.status)}.</p>
+          Status updated to {capitalize(update.data.status)}.
+        </p>
       )}
       {update.error && (
         <div role="alert" className="update-message">

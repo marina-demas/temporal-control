@@ -1,13 +1,13 @@
 // All possible part statuses.
 export type PartStatus =
-  | "configuration"
-  | "active"
-  | "draft"
-  | "deprecated"
-  | "obsolete"
-  | "experimental"
-  | "retired"
-  | "recalled";
+  | 'configuration'
+  | 'active'
+  | 'draft'
+  | 'deprecated'
+  | 'obsolete'
+  | 'experimental'
+  | 'retired'
+  | 'recalled';
 
 // A part definition: the blueprint, shared across configurations.
 export interface Part {
@@ -39,21 +39,15 @@ export interface UpdatePartBody {
   status?: PartStatus;
 }
 
-// Shape of every error response from the API.
+// The error thrown for every failed request, including network failures.
 export class ApiError extends Error {
   error: string;
   allowableStatuses?: PartStatus[]; // included on invalid status changes
 
   constructor(error: string, allowableStatuses?: PartStatus[]) {
     super(error);
-    this.name = "ApiError";
+    this.name = 'ApiError';
     this.error = error;
     this.allowableStatuses = allowableStatuses;
   }
-}
-
-// Response from the health check endpoint.
-export interface HealthCheck {
-  status: "ok";
-  message: string;
 }

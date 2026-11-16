@@ -52,10 +52,10 @@ Do not add new dependencies without asking first.
 - Offline: loading checks use isPending (not isLoading) so paused queries show
   "Waiting for connection..." instead of rendering blank. App shows an offline banner,
   and the Update button is disabled while offline.
+- Tests (npm test): Vitest and Testing Library. api.test.ts covers error handling and requests
+  with a mocked fetch; PartDetails and ConfigTree tests mock api.ts so the real hooks still run.
+  vite.config.ts provides fake env values so tests never need a real .env.
 - Components must use these hooks, not call fetch or api.ts directly
-
-## To build
-- A small Vitest test suite: API error handling and the status dropdown logic
 
 ## Known limitations
 - If a parent row is collapsed after selecting something inside it, then a breadcrumb

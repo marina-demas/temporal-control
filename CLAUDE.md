@@ -57,6 +57,11 @@ Do not add new dependencies without asking first.
   vite.config.ts provides fake env values so tests never need a real .env.
 - Components must use these hooks, not call fetch or api.ts directly
 
+## To build
+- A React error boundary around the app: a friendly fallback with a reload button
+  instead of a blank screen, a comment where an error tracking service would go,
+  and one test for the fallback
+
 ## Known limitations
 - If a parent row is collapsed after selecting something inside it, then a breadcrumb
   item inside that parent is clicked, the tree highlight is hidden. The details panel

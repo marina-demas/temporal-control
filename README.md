@@ -4,6 +4,8 @@ A web app for field technicians to browse time machine configurations, view part
 
 Built with React, TypeScript, Vite, and TanStack Query.
 
+![Temporal Control showing the configuration tree and part details](docs/screenshot.png)
+
 ## Running it
 
 1. Install dependencies:

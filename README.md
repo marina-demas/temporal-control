@@ -70,7 +70,10 @@ The API is mocked and fake environment values are set in `vite.config.ts`, so te
 ## With more time
 
 - **Search by serial or part number.** A technician standing at machine 00014 knows its serial. Search would jump straight to it instead of scrolling the tree.
+- **Status in the tree.** Show each part's status badge on its tree row, so a technician scanning a machine can spot recalled or deprecated parts without clicking each one. Each row already loads its part, so this needs no extra requests.
+- **Retry on errors.** Add a "Try again" button to error messages, so a failed request can be retried without reloading the page.
 - **Where-used view.** Before changing a part's status, show which machines use it. That needs an API endpoint the service doesn't have yet, since it only returns children.
+- **Fleet summary.** Use the empty details panel for an overview, like how many parts are deprecated or recalled. That needs a summary endpoint, since counting from the client would mean loading every part in every machine.
 - **Unit editing.** The API also supports updating a part's unit, but the mission focused on status. Unit is a free-text field with no defined list of valid values, and a typo would change the part everywhere it's used. I'd want to confirm the allowed units with the operations team before adding it.
 - **Shareable links.** Store the selected path in the URL. The API only returns children, not parents, so the URL would need the full path of configuration uuids for the app to expand the tree to the right spot.
 - **Auto-expand the selected path** in the tree, which would fix the known limitation above.
